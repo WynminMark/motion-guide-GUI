@@ -1,12 +1,21 @@
 import tkinter
 import time
 import datetime
+from tkinter.font import Font
+
 
 class motion_guide_GUI():
     def __init__(self, init_window_obj):
         self.init_window_name = init_window_obj
         self.progress_bar_len = 500
         self.is_suspend = False
+        self.motion_sequence = ["收缩\n", "舒张\n"]
+        self.motion_seq_len = len(self.motion_sequence)
+        self.motion_index = 0
+        self.myFont = Font(family="Times New Roman", size=12)
+        self.motion_duration = 2000
+        self.relax_duration = 1000
+        self.f_name = time.strftime('%Y-%m-%d-%H-%M-%S',time.localtime(time.time())) + ".txt"
 
 
     def set_init_window(self):
@@ -37,16 +46,24 @@ class motion_guide_GUI():
 
     def stop(self):
         self.is_suspend = False
-        self.log_data_Text.insert(tkinter.END, "stop function here\r\n")
+        # self.log_data_Text.insert(tkinter.END, "stop function here\r\n")
 
 
     def gui_loop(self):
         self.init_window_name.update()
 
         if self.is_suspend:
-            self.init_data_Text.insert(tkinter.END, "收缩")
-            self.write_log_to_Text("收缩")
-        self.init_window_name.after(2000, self.gui_loop)
+            if self.motion_index <= self.motion_seq_len-1:
+                self.init_data_Text.delete(1.0, tkinter.END)
+                self.init_data_Text.insert(1.0, self.motion_sequence[self.motion_index])
+                self.write_log_to_Text(self.motion_sequence[self.motion_index])
+                self.motion_index += 1
+                self.init_window_name.after(self.motion_duration, self.gui_loop)
+            else:
+                self.motion_index = 0
+                self.init_window_name.after(self.relax_duration, self.gui_loop)
+
+        #self.init_window_name.after(2000, self.gui_loop)
 
 
     def write_log_to_Text(self,logmsg):
@@ -54,6 +71,9 @@ class motion_guide_GUI():
         dt_ms = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
         logmsg_in = str(dt_ms) +" " + str(logmsg) + "\n"      #换行
         self.log_data_Text.insert(tkinter.END, logmsg_in)
+        f = open(self.f_name, "a")
+        f.write(logmsg_in)
+        f.close()
 
 
 
