@@ -307,19 +307,18 @@ def game_loop():
 
     win.after(FPS, game_loop)
 
+
+
 canvas.focus_set() # 聚焦到canvas画板对象上
 canvas.bind("<KeyPress-Left>", horizontal_move_block)
 canvas.bind("<KeyPress-Right>", horizontal_move_block)
 canvas.bind("<KeyPress-Up>", rotate_block)
 canvas.bind("<KeyPress-Down>", land)
 
-
 current_block = None
-
 
 win.update()
 win.after(FPS, game_loop)  # 在FPS 毫秒后调用 game_loop方法
-
 
 win.mainloop()
 
