@@ -62,6 +62,9 @@ class motion_guide_GUI():
             else:
                 self.motion_index = 0
                 self.init_window_name.after(self.relax_duration, self.gui_loop)
+        else:
+            self.init_window_name.after(0, self.gui_loop)
+
 
         #self.init_window_name.after(2000, self.gui_loop)
 
