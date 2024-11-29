@@ -37,8 +37,8 @@ class MY_GUI():
 
     #功能函数
     def str_trans_to_md5(self):
-        src = self.init_data_Text.get(1.0, tkinter.END).strip().replace("\n","").encode()
-        #print("src =",src)
+        src = self.init_data_Text.get(1.0, tkinter.END).strip().replace("\n","").encode()# chass 'bytes'
+        #print("src =",type(src))
         if src:
             try:
                 myMd5 = hashlib.md5()
